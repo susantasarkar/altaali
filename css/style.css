@@ -10174,3 +10174,35 @@ h6,
   color: var(--al-taali-gold);
   font-size: 1.75rem;
 }
+
+
+.site-logo {
+  display: block;
+  width: auto;
+  object-fit: contain;
+  background: #FFFFFF;
+}
+
+.site-logo-desktop {
+  max-width: 210px;
+  max-height: 118px;
+}
+
+.site-logo-mobile {
+  max-width: 145px;
+  max-height: 68px;
+  margin: 6px 0;
+}
+
+.site-logo-footer {
+  max-width: 175px;
+  max-height: 125px;
+  border-radius: 6px;
+}
+
+@media (max-width: 575.98px) {
+  .site-logo-mobile {
+    max-width: 118px;
+    max-height: 58px;
+  }
+}
