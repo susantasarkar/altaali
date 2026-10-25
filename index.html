@@ -74,6 +74,7 @@ footer{padding:46px 0 24px}.footer-columns{gap:32px}.footer-columns a,.footer-co
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}#services .product:hover{transform:none}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Brand","@id":"https://altaalicleaning.ae/#brand","name":"Al Taali Cleaning & Facility Management Services Co","alternateName":"Al Taali","url":"https://altaalicleaning.ae/","logo":"https://altaalicleaning.ae/img/al-taali-logo-2026.png","description":"Al Taali Cleaning & Facility Management Services Co provides residential and commercial cleaning, deep cleaning, housekeeping and facility management services in Dubai, Sharjah and Abu Dhabi.","sameAs":["https://www.facebook.com/Altaalicleaninguae","https://www.instagram.com/altaalicleaninguae/","https://www.linkedin.com/company/88453957/","https://www.tiktok.com/@altaalicleaninguae"]},{"@type":"Organization","@id":"https://altaalicleaning.ae/#dubai-entity","name":"Rukn Al Taali Cleaning Services Co. LLC","legalName":"Rukn Al Taali Cleaning Services Co. LLC","brand":{"@id":"https://altaalicleaning.ae/#brand"},"telephone":"+971582407886","email":"info@altaalicleaning.ae","address":{"@type":"PostalAddress","streetAddress":"Office M2-157, Xavier Business Center, Burj Al Nahar Complex, M-2 Floor, Muteena, Deira","addressLocality":"Dubai","addressCountry":"AE"}},{"@type":"Organization","@id":"https://altaalicleaning.ae/#sharjah-entity","name":"Al Taali Building Cleaning Services FZE","legalName":"Al Taali Building Cleaning Services FZE","brand":{"@id":"https://altaalicleaning.ae/#brand"}},{"@type":"WebSite","@id":"https://altaalicleaning.ae/#website","url":"https://altaalicleaning.ae/","name":"Al Taali Cleaning & Facility Management Services Co","alternateName":"Al Taali","inLanguage":"en"},{"@type":"WebPage","@id":"https://altaalicleaning.ae/#webpage","url":"https://altaalicleaning.ae/","name":"Al Taali Cleaning & Facility Management Services Co","isPartOf":{"@id":"https://altaalicleaning.ae/#website"},"about":{"@id":"https://altaalicleaning.ae/#brand"},"inLanguage":"en"}]}</script>
+<link rel="stylesheet" href="css/service-location.css">
 </head>
 <body>
 <div class="notice"><span>Professional cleaning from AED 35/hour</span></div>
@@ -156,7 +157,7 @@ return '<div class="booking-details"><h3>Booking address</h3><p>Please provide t
 '<div class="booking-field"><label for="flatNumber">FLAT / VILLA NO. <span class="required">*</span></label><input id="flatNumber" autocomplete="address-line2" placeholder="Example: Flat 1204"></div>'+
 '<div class="booking-field"><label for="areaName">AREA NAME <span class="required">*</span></label><input id="areaName" placeholder="Example: Dubai Marina"></div>'+
 '<div class="booking-field full"><label for="emirate">EMIRATE <span class="required">*</span></label><select id="emirate"><option value="">Select emirate</option><option>Dubai</option><option>Sharjah</option><option>Ajman</option><option>Abu Dhabi</option><option>Umm Al Quwain</option><option>Ras Al Khaimah</option><option>Fujairah</option></select></div>'+
-'<div class="booking-field full"><label for="coordinates">GOOGLE MAPS LINK OR GPS COORDINATES <span class="required">*</span></label><div class="location-row"><input id="coordinates" placeholder="Paste Google Maps link or use current location"><button type="button" class="btn btn-outline" onclick="useCurrentLocation()"><i class="fas fa-location-arrow"></i> Use current location</button></div><div class="location-status" id="locationStatus">Your browser may ask for location permission.</div></div>'+
+'<div class="booking-field full"><label for="coordinates">SERVICE LOCATION <span class="required">*</span></label><input id="coordinates" placeholder="Google Maps link"></div>'+
 '<div class="booking-field full"><label for="addressNotes">LANDMARK / ACCESS NOTES</label><input id="addressNotes" placeholder="Parking, gate, reception or nearby landmark"></div></div></div>'}
 function renderCart(){
 document.getElementById('cartCount').textContent=cart.length;
@@ -165,17 +166,6 @@ if(!cart.length){items.innerHTML='<div class="empty"><i class="fas fa-shopping-b
 items.innerHTML=cart.map((x,i)=>'<div class="cart-item"><div><b>'+x.name+'</b><br><small>'+(x.hours?x.hours+' hours × AED 35':'Quotation required')+'</small></div><div style="text-align:right"><b>'+(x.price?money(x.price):'Quote')+'</b><br><button class="remove" onclick="removeItem('+i+')">Remove</button></div></div>').join('');
 const total=cart.reduce((s,x)=>s+(x.price||0),0);
 bottom.innerHTML='<div class="cart-summary"><div class="sum-row"><span>Priced services</span><b>'+money(total)+'</b></div><div class="sum-row"><span>Quotation items</span><b>'+cart.filter(x=>x.price===null).length+'</b></div><div class="sum-row sum-total"><span>Estimated total</span><span>'+money(total)+'</span></div></div>'+bookingForm()+'<button class="btn btn-gold" style="width:100%" onclick="checkout()">Continue on WhatsApp</button><p style="font-size:11px;color:#607084;text-align:center">Final date, time, availability and specialist-service pricing will be confirmed by our team.</p>'
-}
-function useCurrentLocation(){
-const status=document.getElementById('locationStatus'),field=document.getElementById('coordinates');
-if(!navigator.geolocation){status.textContent='Location is not supported on this device. Please paste a Google Maps link.';return}
-status.textContent='Getting your current location…';
-navigator.geolocation.getCurrentPosition(function(pos){
-const lat=pos.coords.latitude.toFixed(6),lng=pos.coords.longitude.toFixed(6);
-field.value=lat+', '+lng;
-status.innerHTML='<a href="https://www.google.com/maps?q='+lat+','+lng+'" target="_blank" style="color:#168447;font-weight:800">Location captured — view on Google Maps</a>';
-field.classList.remove('field-error');
-},function(){status.textContent='Location permission was not available. Please paste a Google Maps link or coordinates.';},{enableHighAccuracy:true,timeout:12000,maximumAge:60000})
 }
 function checkout(){
 const ids=['customerName','customerPhone','buildingName','flatNumber','areaName','emirate','coordinates'];
@@ -194,5 +184,6 @@ renderCart();
 <script>
 (function(){const q=new URLSearchParams(location.search).get('service');if(!q)return;const term=q.trim().toLowerCase();document.querySelectorAll('#services .product').forEach(function(card){card.style.display=card.textContent.toLowerCase().includes(term)?'':'none'});document.querySelector('#services')?.scrollIntoView({behavior:'smooth'});})();
 </script>
+<script src="js/service-location.js" defer></script>
 </body>
 </html>
